@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Your description" />
+    <meta name="author" content="Your name" />
+    <link rel="icon" href="./assets/images/icon.png" />
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on Facebook, Twitter, LinkedIn -->
+    
+    <!-- to have large image post format in Twitter -->
+
+    <!-- Webpage Title -->
+    <title>OrioChain Team</title>
+    <link rel="stylesheet" href="./css/loader.css">
+    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <link href="./css/aos.min.css" rel="stylesheet" />
+    <link href="./css/main.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f4f4f9;
+    }
+
+    #chat-container {
+      width: 90%;
+      max-width: 600px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    #chat-box {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    #chat-box p {
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .user-message {
+      background-color: #e0f7fa;
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .bot-message {
+      background-color: #f0f4c3;
+      align-self: flex-start;
+      text-align: left;
+    }
+
+    #input-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    #send-button {
+      padding: 10px 20px;
+      background-color: #2196f3;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #send-button:hover {
+      background-color: #1976d2;
+    }
+
+    #response-container {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #e3f2fd;
+      width: 100%;
+      min-height: 50px;
+    }
+
+    #bot-response {
+      font-size: 16px;
+      color: #333;
+      white-space: pre-wrap; /* Preserve line breaks */
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light py-3 navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="fa-solid fa-dragon home_text"></i>
+        <span class="home_text">Orio</span>Chain
+        </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link " href="Scholarship.html">Scholarships </a>
+          </li>
+
+          <li class="nav-item">
+          <a class="nav-link" href="chatbot.html">ScholarAI </a>
+          </li>
+
+
+              <li class="nav-item">
+          <a class="nav-link " href="about.html">Team</a>
+          </li>
+      </ul>
+      </div>
+    </div>
+    </nav>
+  <div id="chat-container">
+    <div id="chat-box"></div>
+    <div id="response-container">
+      <p id="bot-response">Bot's response will appear here...</p>
+    </div>
+    <div id="input-container">
+      <input id="user-input" type="text" placeholder="Type your message..." />
+      <button id="send-button">Send</button>
+    </div>
+  </div>
+  <footer class="bg-gradient-to-r from-blue-900 to-blue-300 text-white py-12" style="margin-top: 15rem;">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center md:items-start space-y-8 md:space-y-0 md:space-x-6">
+        <div class="text-center md:text-left">
+          <p class="text-2xl font-semibold text-yellow-400 mb-2">
+            ScholarAI - Scholarship and Financial-aid portal
+          </p>
+          <p class="text-lg">
+            &copy; 2024 DEVXION. All rights reserved.
+          </p>
+        </div>
+        <nav class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-6 text-sm">
+          <span class="text-yellow-300">Privacy Policy</span>
+          <span class="text-yellow-300">Terms & Conditions</span>
+          <span class="text-yellow-300">Accessibility</span>
+        </nav>
+      </div>
+      <div class="text-center mt-6 text-xs text-gray-400">
+        <p>Made with ❤ by DEVXION for a smarter tomorrow.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+    const API_KEY = 'AIzaSyAIDfH5EhQ0g-Qi2JAa2CdSLJ6DG_cbygU'; // Replace with your actual API key
+
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+    const botResponse = document.getElementById('bot-response');
+
+    // Function to send user input to the Gemini model
+    async function sendMessage(query) {
+      const endpoint = `${BASE_URL}?key=${API_KEY}`;
+      const payload = {
+        contents: [
+          {
+            parts: [
+              { text: `You are ScholarAI, an intelligent assistant designed to provide in-depth information about scholarships worldwide.
+        Your goal is to help students discover, understand, and apply for the most suitable scholarships.
+
+        For each scholarship, provide:
+        1. A detailed explanation of its significance.
+        2. The eligibility criteria and prerequisites.
+        3. Step-by-step instructions on how to apply, including relevant links.
+        4. Financial aid details and deadlines.
+
+        Ensure that students receive complete and actionable insights.${query}` }
+            ]
+          }
+        ]
+      };
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data); // Log the full response for debugging
+
+        // Extracting the response text from the API response structure
+        const botMessage = data.candidates && data.candidates[0].content.parts[0].text
+          ? data.candidates[0].content.parts[0].text
+          : 'No response available.';
+
+        // Format the response and make bold text for words surrounded by double stars
+        const formattedResponse = formatBoldText(botMessage);
+
+        // Display the formatted bot response in the container
+        botResponse.innerHTML = formattedResponse;
+      } catch (error) {
+        console.error('Error:', error);
+        botResponse.textContent = 'An error occurred. Please try again.';
+      }
+    }
+
+    // Function to add a message to the chat box
+    function addMessageToChat(text, isUser = true) {
+      const message = document.createElement('p');
+      message.textContent = text;
+      message.className = isUser ? 'user-message' : 'bot-message';
+      chatBox.appendChild(message);
+      chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+    }
+
+    // Function to format the response and make *bold* text
+    function formatBoldText(text) {
+      // Replace *bold* markers with <strong> tags
+      return text.replace(/\\(.?)\\*/g, '<strong>$1</strong>');
+    }
+
+    // Handle send button click
+    sendButton.addEventListener('click', async () => {
+      const query = userInput.value.trim();
+      if (!query) {
+        alert('Please enter a message.');
+        return;
+      }
+
+      // Display the user's message
+      addMessageToChat(query, true);
+      userInput.value = ''; // Clear the input field
+
+      // Get response from Gemini
+      await sendMessage(query);
+    });
+
+    // Handle Enter key press
+    userInput.addEventListener('keypress', async (event) => {
+      if (event.key === 'Enter') {
+        sendButton.click();
+      }
+    });
+  </script>
+</body>
+</html>

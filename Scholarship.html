@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/loader.css" />
+    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <script src="node_modules\web3\dist\web3.min.js"></script>
+    <script src="js/App.js"></script>
+    <script src="js/qrcode.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="./css/aos.min.css" rel="stylesheet" />
+    <link rel="icon" href="./assets/images/icon.png" />
+    <title>Upload Document</title>
+  </head>
+
+  <body>
+    <!-- Loading Circular Dots -->
+    <div class="loader-wraper">
+      <div class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <!--NavigationBar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-3 navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <i class="fa-solid fa-dragon home_text"></i>
+          <span class="home_text">Scholarship</span>
+          Portal
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="Scholarship.html">Scholarships</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="chatbot.html">ScholarAI</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">Team</a>
+            </li>
+          </ul>
+          <div class="d-flex">
+            <button
+              id="loginButton"
+              onclick="connect()"
+              class="btn main-button"
+            >
+              Login
+            </button>
+            <button
+              id="logoutButton"
+              onclick="disconnect()"
+              class="btn main-button"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+
+    <div style="padding: 20px;">
+        <style>
+          .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+          }
+
+          .card {
+            width: 100%;
+            max-width: 500px; /* Restricts the maximum card width */
+            min-height: 350px; /* Ensures consistent height */
+            padding: 20px;
+            background: #fff;
+            border: 6px solid #000;
+            box-shadow: 12px 12px 0 #000;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column; /* Stack content vertically */
+            justify-content: space-between; /* Align "Apply" button at the bottom */
+          }
+
+          .card:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 17px 17px 0 #000;
+          }
+
+          .card__title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+            position: relative;
+            overflow: hidden;
+          }
+
+          .card__title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 90%;
+            height: 3px;
+            background-color: #000;
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+          }
+
+          .card:hover .card__title::after {
+            transform: translateX(0);
+          }
+
+          .card__content {
+            font-size: 16px;
+            line-height: 1.4;
+            color: #000;
+            margin-bottom: 20px;
+          }
+
+          .card__form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .card__button {
+            border: 3px solid #000;
+            background: #000;
+            color: #fff;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+            width: 50%;
+            height: 100%;
+            text-align: center;
+          }
+
+          .card__button::before {
+            content: "Sure?";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 105%;
+            background-color: #5ad641;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+          }
+
+          .card__button:hover::before {
+            transform: translateY(0);
+          }
+
+          .card__button:active {
+            transform: scale(0.95);
+          }
+
+          /* Responsive Grid */
+          @media (min-width: 768px) {
+            .card {
+              flex: 1 1 calc(33.333% - 40px); /* Three cards per row, adjust for gap */
+            }
+          }
+
+          @media (max-width: 767px) {
+            .card {
+              flex: 1 1 100%; /* Stacks cards vertically on smaller screens */
+            }
+          }
+        </style>
+
+        <div class="container">
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>National Merit-cum-Means Scholarship</h3>
+            </p>
+
+              <form class="card__form" action="https://dsel.education.gov.in/scheme/nmmss" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Central Sector Scheme of Scholarships for College & University Students</h3>
+            </p>
+            <form class="card__form" action="https://www.education.gov.in/scholarships-education-loan-0" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>INSPIRE Scholarship (by DST)</h3>
+            </p>
+            <form class="card__form" action="https://www.online-inspire.gov.in/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Rajasthan Merit-based Scholarships</h3>
+            </p>
+            <form class="card__form" action="https://sje.rajasthan.gov.in/Default.aspx?PageID=346" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Tamil Nadu State Scholarship for Academic Excellence</h3>
+            </p>
+            <form class="card__form" action="https://tndce.tn.gov.in/Home/scholarship" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Karnataka ePASS Merit Scholarships</h3>
+            </p>
+            <form class="card__form" action="https://karepass.cgg.gov.in/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+
+          </div>
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>ONGC Foundation Scholarship</h3>
+            </p>
+            <form class="card__form" action="https://ongcscholar.org/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>PM Scholarship Scheme (Prime Minister’s Scholarship Scheme)</h3>
+            </p>
+            <form class="card__form" action="https://www.india.gov.in/prime-ministers-scholarship-scheme-pmss" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Post Matric Scholarships Scheme for Minorities</h3>
+            </p>
+            <form class="card__form" action="https://www.minorityaffairs.gov.in/show_content.php?lang=1&level=2&ls_id=163&lid=165" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Pre-Matric Scholarships Scheme for Minorities</h3>
+            </p>
+            <form class="card__form" action="https://www.minorityaffairs.gov.in/show_content.php?lang=1&level=2&ls_id=163&lid=165" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Dr. Ambedkar Post-Matric Scholarship for Economically Backward Classes</h3>
+            </p>
+            <form class="card__form" action="https://www.highereducation.tripura.gov.in/DHE/notification-dr-ambedkar-post-matric-scholarship-economically-backward-class-ebc-general-students" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>National Fellowship and Scholarship for Higher Education of ST Students</h3>
+            </p>
+            <form class="card__form" action="https://fellowship.tribal.gov.in/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Maulana Azad National Fellowship for Minority Students</h3>
+            </p>
+            <form class="card__form" action="https://www.minorityaffairs.gov.in/show_content.php?lang=1&level=1&ls_id=625&lid=107" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Kishore Vaigyanik Protsahan Yojana (KVPY)</h3>
+            </p>
+            <form class="card__form">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>HDFC Educational Crisis Scholarship</h3>
+            </p>
+            <form class="card__form" action="https://www.hdfcbankecss.com/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>ONGC Foundation Scholarship</h3>
+            </p>
+            <form class="card__form">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Reliance Foundation Scholarships</h3>
+            </p>
+            <form class="card__form" action="https://scholarships.reliancefoundation.org/PG_Scholarship.aspx" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Tata Trusts Scholarships</h3>
+            </p>
+            <form class="card__form" action="https://www.tatatrusts.org/our-work/individual-grants-programme/education-grants" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Aditya Birla Scholarship</h3>
+            </p>
+            <form class="card__form" action="https://www.adityabirlascholars.net/the-scholarship/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Fulbright-Nehru Master's Fellowships (USA)</h3>
+            </p>
+            <form class="card__form" action="https://www.usief.org.in/fulbright-nehru-fellowships.aspx" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Chevening Scholarships (UK)</h3>
+            </p>
+            <form class="card__form" action="https://www.chevening.org/scholarships/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Commonwealth Scholarships (UK)</h3>
+            </p>
+            <form class="card__form" action="https://www.birmingham.ac.uk/international/students/finance/scholarships/commonwealth-shared-scholarships.aspx" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Erasmus Mundus Joint Master Degrees (Europe)</h3>
+            </p>
+            <form class="card__form" action="https://erasmus-plus.ec.europa.eu/opportunities/opportunities-for-individuals/students/erasmus-mundus-joint-masters" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Australian Government Research Training Program (RTP)</h3>
+            </p>
+            <form class="card__form" action="https://www.education.gov.au/research-block-grants/research-training-program" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Swiss Government Excellence Scholarships (Switzerland)</h3>
+            </p>
+            <form class="card__form" action="https://euraxess.ec.europa.eu/worldwide/lac/news/swiss-government-excellence-scholarships-foreign-scholars-2025-2026-incoming" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>DAAD Scholarships (Germany)</h3>
+            </p>
+            <form class="card__form" action="https://www.daad.de/en/studying-in-germany/scholarships/daad-scholarships/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Japan MEXT Scholarship (Japan)</h3>
+            </p>
+            <form class="card__form" action="https://www.us.emb-japan.go.jp/english/html/mext-scholarship-info.html" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>New Zealand Commonwealth Scholarships</h3>
+            </p>
+            <form class="card__form" action="https://www.gyandhan.com/scholarships/new-zealand-commonwealth-scholarship" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Vanier Canada Graduate Scholarships (Canada)</h3>
+            </p>
+            <form class="card__form" action="https://vanier.gc.ca/en/home-accueil.html" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Rhodes Scholarships (University of Oxford, UK)</h3>
+            </p>
+            <form class="card__form" action="https://www.rhodeshouse.ox.ac.uk/scholarships/the-rhodes-scholarship/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Stanford Reliance Dhirubhai Fellowship (USA)</h3>
+            </p>
+            <form class="card__form" action="https://www.gsb.stanford.edu/newsroom/school-news/reliance-recommits-mba-fellowship-indian-students" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Gates Cambridge Scholarships (University of Cambridge, UK)</h3>
+            </p>
+            <form class="card__form" action="https://www.gatescambridge.org/programme/the-scholarship/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Melbourne International Research Scholarships (University of Melbourne, Australia)</h3>
+            </p>
+            <form class="card__form" action="https://scholarships.unimelb.edu.au/awards/melbourne-research-scholarship" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>University of British Columbia International Scholars Program (Canada)</h3>
+            </p>
+            <form class="card__form" action="https://www.scholars4dev.com/2333/ilot-scholarships-at-university-of-british-columbia/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Inlaks Shivdasani Foundation Scholarships</h3>
+            </p>
+            <form class="card__form" action="https://www.inlaksfoundation.org/scholarships/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Narotam Sekhsaria Foundation Scholarship</h3>
+            </p>
+            <form class="card__form" action="https://pg.nsfoundation.co.in/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>JN Tata Endowment for Higher Education of Indians</h3>
+            </p>
+            <form class="card__form" action="https://jntataendowment.org/" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Rotary Peace Fellowships</h3>
+            </p>
+            <form class="card__form" action="https://www.rotary.org/en/our-programs/peace-fellowships" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <span class="card__title"></span>
+            <p class="card__content">
+              <h3>Aga Khan Foundation International Scholarship</h3>
+            </p>
+            <form class="card__form" action="https://the.akdn/en/what-we-do/developing-human-capacity/education/international-scholarships" method="get">
+              <button class="card__button">Apply</button>
+            </form>
+          </div>
+
+          </div>
+        </div>
+      </div>
+
+    <!-- footer -->
+    <div class="container">
+      <footer class="footer-dark">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6 col-md-3 item">
+              <h3   data-aos="fade-right">Services</h3>
+              <ul  data-aos="zoom-in">
+                <li><a href="#">Ethereum</a></li>
+                <li><a href="#">Blockchain Tech.</a></li>
+                <li><a href="#">Smart Contracts </a></li>
+              </ul>
+            </div>
+            <div class="col-sm-6 col-md-3 item">
+              <h3   data-aos="fade-right">About us</h3>
+              <ul  data-aos="zoom-in">
+                <li><a href="about.html">Company</a></li>
+                <li><a href="about.html">Team</a></li>
+              </ul>
+            </div>
+            <div class="col-md-6 item text">
+              <h3  data-aos="fade-right">
+                 <i class="fa-solid fa-dragon"></i>
+                 EduGrantHub
+                </h3>
+              <!-- <a href="https://www.flaticon.com/free-icons/blockchain" title="blockchain icons">Blockchain icons created by photo3idea_studio - Flaticon</a> -->
+              <p  data-aos="zoom-in">
+                EduGrantHub is an online platform designed to facilitate the application, management, and disbursement of scholarships. It serves as a centralized hub where students can search for scholarships, check eligibility, submit applications, upload required documents, and track their application status. Additionally, it helps scholarship providers manage the selection process, communicate with applicants, and distribute funds efficiently.
+              </p>
+            </div>
+
+            <div  data-aos="zoom-in" class="col item social">
+              <a href="#"><i class="fa-brands fa-facebook"></i></a>
+              <a href="#"><i class="fa-brands fa-twitter"></i> </a
+              ><a href="#"><i class="fa-brands fa-github"> </i></a>
+              <a href="#"><i class="fa-brands fa-instagram"> </i> </a>
+            </div>
+          </div>
+          <p class="copyright"> EduGrantHub  © 2024</p>
+        </div>
+
+      </footer>
+    </div>
+
+    <!-- floating button -->
+    <i onclick="topFunction()" id="scroll-btn" class="fa-solid fa-angle-up"></i>
+
+    <!-- contact us Button -->
+    <div>
+      <a href="mailto:devaloshe@gmail.com?subject=From OrioChain Site">
+        <i class="mail-us fa-solid fa-headset"></i>
+      </a>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/aos.js"></script>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
