@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship Finance Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        form {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        label, input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Scholarship Finance Calculator</h1>
+    <form id="scholarship-form">
+        <label for="num_students">Number of Students:</label>
+        <input type="number" id="num_students" required>
+
+        <label for="avg_scholarship">Average Scholarship Amount ($):</label>
+        <input type="number" id="avg_scholarship" required>
+
+        <label for="admin_rate">Administrative Cost Rate (%):</label>
+        <input type="number" step="0.01" id="admin_rate" required>
+
+        <label for="revenue_rate">Platform Revenue Rate (%):</label>
+        <input type="number" step="0.01" id="revenue_rate" required>
+
+        <input type="button" value="Calculate" onclick="calculateScholarship()">
+    </form>
+
+    <div class="result" id="result"></div>
+    <script>
+      function calculateScholarship() {
+          const numStudents = parseInt(document.getElementById('num_students').value);
+          const avgScholarship = parseFloat(document.getElementById('avg_scholarship').value);
+          const adminRate = parseFloat(document.getElementById('admin_rate').value) / 100;
+          const revenueRate = parseFloat(document.getElementById('revenue_rate').value) / 100;
+
+          if (isNaN(numStudents) || isNaN(avgScholarship) || isNaN(adminRate) || isNaN(revenueRate)) {
+              alert('Please fill all fields with valid values.');
+              return;
+          }
+
+          const totalScholarships = numStudents * avgScholarship;
+          const adminCosts = totalScholarships * adminRate;
+          const platformRevenue = totalScholarships * revenueRate;
+          const netOutflow = totalScholarships + adminCosts - platformRevenue;
+
+          document.getElementById('result').innerHTML = `
+              <p><strong>Total Scholarships Awarded:</strong> $${totalScholarships.toFixed(2)}</p>
+              <p><strong>Administrative Costs:</strong> $${adminCosts.toFixed(2)}</p>
+              <p><strong>Platform Revenue:</strong> $${platformRevenue.toFixed(2)}</p>
+              <p><strong>Net Outflow:</strong> $${netOutflow.toFixed(2)}</p>
+          `;
+      }
+  </script>
+</body>
+</html>
